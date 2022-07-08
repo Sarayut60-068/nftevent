@@ -129,18 +129,26 @@ const mint = () => {
       <div>
         <div className="bg-[#000937] p-3 rounded-t-lg  rounded-[30px]">
           {/* <img className="font-serif text-4xl italic font-normal text-back-700 " src="../public/fin-logo.png"/> */}
-          <div className="font-serif text-white text-4xl italic font-normal text-back-700 ">
-            FinEvent
-          </div>
+          
+
+            <div className="p-2 flex pl-6 ">
+              <img src="/fin-logo.png" className="mr-3 h-6 sm:h-7 lg:h-12" />
+              <div>
+                <p className="self-center lg:text-4xl  font-serif whitespace-nowrap dark:text-white sm: text-sm">FinEvent</p>
+
+              </div>
+            </div>
+         
+
 
           {address ? (
-            <div className="p-2 font-serif text-back text-white outline outline-offset-1 text-back-700  outline-[#002368] rounded-lg  drop-shadow-xl absolute top-3 right-6 transition ease-in-out delay-150 bg-[#00A8E8 hover:-translate-y-1 hover:scale-110 hover:bg-[#4E9CE3] duration-300">
+            <div className="p-4 font-serif text-back text-white outline outline-offset-1 text-back-700 sm: text-sm  outline-[#00A8E8] rounded-lg  drop-shadow-xl absolute top-3 right-6 transition ease-in-out delay-150 bg-[#00A8E8 hover:-translate-y-1 hover:scale-110 hover:bg-[#4E9CE3] duration-300">
               {testaddress}
 
             </div>
           ) : (
             <button
-              className="p-2 font-serif text-back text-white outline outline-offset-1 text-back-700  outline-[#002368] rounded-lg  drop-shadow-xl absolute top-3 right-6 transition ease-in-out delay-150 bg-[#00A8E8 hover:-translate-y-1 hover:scale-110 hover:bg-[#4E9CE3] duration-300"
+              className="p-4  font-serif text-back text-white outline outline-offset-1 text-back-700 sm: text-sm outline-[#00A8E8] rounded-lg  drop-shadow-xl absolute top-3 right-6 transition ease-in-out delay-150 bg-[#00A8E8 hover:-translate-y-1 hover:scale-110 hover:bg-[#4E9CE3] duration-300"
               onClick={connectWallet}
             >
               Connect Wallet
@@ -160,10 +168,7 @@ const mint = () => {
               <div className=" py-5 text-center font-serif text-white text-2xl  text-back-700">
                 {currentSupply}/{maxSupply}
               </div>
-              {/* <div className="flex justify-center my-12'">
-                    <img className="rounded-lg border-4 box-content box-center  h-96 object-scale-down bg-white bg-center  " src="/ticket2.png">
-                    </img>
-                  </div> */}
+
               <div className="flex justify-center my-12'">
 
                 <button
@@ -177,10 +182,24 @@ const mint = () => {
             </div>
           </div>
         ) : (
-          <div className=' py-8 '>
+            <div className=' py-8 box-content content-none '>
+              <div className=' py-8  self-center lg:text-4xl flex justify-center font-serif whitespace-nowrap dark:text-white sm: text-sm'>
+               Please connect wallet 
+              </div>
+              
+              <div className=' py-8 flex justify-center  '>
+              
+                <div className=' py-8 box-content border-solid h-80 w-96 p-4  border-2 bg-origin-padding rounded-lg  bg-gradient-to-r from-cyan-500 to-blue-500' >
+                  <img className=" bg-origin-padding rounded-full h-80 w-96 " src="ticket2.png"   onClick={connectWallet}></img>
+                </div>
+              </div>
+              <div className=' py-20  '>
 
+              </div>
+              <div className=' py-10  '>
 
-          </div>
+              </div>
+            </div>
 
 
         )
