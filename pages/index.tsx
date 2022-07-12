@@ -124,21 +124,19 @@ const mint = () => {
   }, []);
 
   return (
-    <div className="bg-[#002368]">
+    <div className="bg-[#002368] ">
 
       <div>
         <div className="bg-[#000937] p-3 rounded-t-lg  rounded-[30px]">
-          {/* <img className="font-serif text-4xl italic font-normal text-back-700 " src="../public/fin-logo.png"/> */}
-          
 
-            <div className="p-2 flex pl-6 ">
-              <img src="/fin-logo.png" className="mr-3 h-6 sm:h-7 lg:h-12" />
-              <div>
-                <p className="self-center lg:text-4xl  font-serif whitespace-nowrap dark:text-white sm: text-sm">FinEvent</p>
+          <div className="p-2 flex pl-6 ">
+            <img src="/fin-logo.png" className="mr-3 h-6 sm:h-7 lg:h-12" />
+            <div>
+              <p className="self-center lg:text-4xl  font-serif whitespace-nowrap dark:text-white sm: text-sm">FinEvent</p>
 
-              </div>
             </div>
-         
+          </div>
+
 
 
           {address ? (
@@ -160,46 +158,63 @@ const mint = () => {
         </div>
 
         {address ? (
-          <div className="  ">
-            <div className=" py-8 ">
+          <div className=" py-10 ">
+
+            <div className=" py-8 rounded-lg border-4 ml-40 mr-40 max-h-full  ">
+              <div className=' py-10  '>
+
+              </div>
               <div className=" py-5 text-center font-serif text-white text-2xl  text-back-700">
                 {nameToken}
+              </div>
+              <div className=' py-10  '>
+
               </div>
               <div className=" py-5 text-center font-serif text-white text-2xl  text-back-700">
                 {currentSupply}/{maxSupply}
               </div>
+              <div className=' py-10  '>
 
+              </div>
               <div className="flex justify-center my-12'">
-
                 <button
-                  className="p-5 font-serif text-back  outline outline-offset-1 text-back-700  outline-[#32363D]    drop-shadow-x transition ease-in-out delay-150 bg-[#2759ff] hover:-translate-y-1 hover:scale-110 hover:bg-[#7972cb]"
+                  className="p-5 font-serif text-back rounded-lg outline outline-offset-1 text-back-700  outline-[#32363D]    drop-shadow-x transition ease-in-out delay-150 bg-[#2759ff] hover:-translate-y-1 hover:scale-110 hover:bg-[#7972cb]"
                   onClick={handlerPublicMint}
                 >
                   MINT
                 </button>
 
               </div>
-            </div>
-          </div>
-        ) : (
-            <div className=' py-8 box-content content-none '>
-              <div className=' py-8  self-center lg:text-4xl flex justify-center font-serif whitespace-nowrap dark:text-white sm: text-sm'>
-               Please connect wallet 
-              </div>
-              
-              <div className=' py-8 flex justify-center  '>
-              
-                <div className=' py-8 box-content border-solid h-80 w-96 p-4  border-2 bg-origin-padding rounded-lg  bg-gradient-to-r from-cyan-500 to-blue-500' >
-                  <img className=" bg-origin-padding rounded-full h-80 w-96 " src="ticket2.png"   onClick={connectWallet}></img>
-                </div>
-              </div>
-              <div className=' py-20  '>
-
-              </div>
               <div className=' py-10  '>
 
               </div>
+
+
             </div>
+            <div className=' py-10  '>
+
+            </div>
+
+          </div>
+        ) : (
+          <div className=' py-8 box-content content-none '>
+            <div className=' py-8  self-center lg:text-4xl flex justify-center font-serif whitespace-nowrap dark:text-white sm: text-sm'>
+              Please connect wallet
+            </div>
+
+            <div className=' py-8 flex justify-center  '>
+
+              <div className=' py-8 box-content border-solid h-80 w-96 p-4  border-2 bg-origin-padding rounded-lg  bg-gradient-to-r from-cyan-500 to-blue-500' >
+                <img className=" bg-origin-padding rounded-full h-80 w-96 " src="ticket2.png" onClick={connectWallet}></img>
+              </div>
+            </div>
+            <div className=' py-20  '>
+
+            </div>
+            <div className=' py-10  '>
+
+            </div>
+          </div>
 
 
         )
