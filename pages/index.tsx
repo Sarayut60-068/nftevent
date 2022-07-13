@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import * as ethers from "ethers";
+// import * as web3 from "web3";
 import { useEffect, useState } from "react";
 import {
   connectWallet,
@@ -12,19 +13,27 @@ import {
 import {
   getNetworkCurrency,
   getNetworkName,
+//   getNetworkTokens,
 } from "../constants/network-id";
 import { formatEther, formatUnits } from "ethers/lib/utils";
+// import { Token } from "../types/token.type";
+// import Metamask from './Metamask';
+import axios from "axios";
 import abi_contract from "../ABI_CONTRACT/abi.json";
 
 
-const mint = () => {
+
+const Home: NextPage = () => {
   const [address, setAddress] = useState<string | null>(null);
   const [network, setNetwork] = useState<string | null>(null);
+//   const [balance, setBalance] = useState<string | null>(null);
+
   const [nameToken, setNameToken] = useState<string | null>(null);
   const [maxSupply, setMaxSupply] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
   const [currentSupply, setCurrentSupply] = useState<string | null>(null);
 
-  const addr_contract = "0x5e223419084f5F89d14e61e6E7022f605dcA57a0";
+  const [addr_contract, setAddr_contract] = useState("0x5e223419084f5F89d14e61e6E7022f605dcA57a0");
   const getTokenBalance = async (
     tokenAddress: string,
     ownerAddress: string
@@ -32,80 +41,117 @@ const mint = () => {
     const contract = new ethers.Contract(tokenAddress, abi_contract, getProvider()!);
     return contract.balanceOf(ownerAddress);
   };
-
   let testaddress = "";
   if (address != null) {
     testaddress = address.substring(0, 5) + "..." + address.substring(38, 42);
 
   }
-
   const getNameToken = async () => {
-    const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
-    return contract.name();
+        const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
+        return contract.name();
   }
   const getMaxSupply = async () => {
-    const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
-    return contract.MAX_SUPPLY();
+        const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
+        return contract.MAX_SUPPLY();
   }
   const getCurrentSupply = async () => {
 
-    const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
-    return contract.supply();
+        const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
+        return contract.supply();
   }
-  const sentpublicMint = async (
-    payableAmount: string, //(ether)
-    numberOfTokens: string //(uint8)
-  ) => {
-    const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
+  // const getBalanceOf = async () => {
 
-    const provider = getProvider()!;
-    const signer = await provider.getSigner();
-    const options = { value: ethers.utils.parseEther("0.01") }
-    const txResponse = await contract.connect(signer).publicMint(1);
-    await txResponse.wait()
-  }
-  const handlerPublicMint = async () => {
-    const provider = getProvider()!;
-    const signer = await provider.getSigner();
-    const contract = new ethers.Contract(addr_contract, abi_contract, signer);
+  //       const contract = new ethers.Contract(addr_contract, abi_contract, getProvider()!);
+  //       return contract.balanceOf();
+  // }
 
-
-    const txResponse = await contract.publicMint(1, { value: ethers.utils.parseEther("0.01") })
-    await txResponse.wait()
-
-
-  }
-  const loadAccountData = async () => {
+  const handlerPublicMint = async () =>{
     const addr = getWalletAddress();
     setAddress(addr);
     const chainId = await getChainId();
     setNetwork(chainId);
-
+    
     const tokenBalance = await getTokenBalance(addr_contract, addr).then((res) =>
-      formatUnits(res, 0)
+    formatUnits(res, 0)
     )
     console.log(tokenBalance)
 
-    const name = await getNameToken()
-    setNameToken(name)
-    console.log(name)
+      const provider = getProvider()!;
+      const signer = provider.getSigner();
+      if(Number(tokenBalance) + 1 > 2){
+        setStatus("you already have 2 Tickets. ");
+        
+      }
+      else{
+        
+        // const options = {value: ethers.utils.parseEther("0.01")}
+        const contract = new ethers.Contract(addr_contract, abi_contract, signer);
+        
+        const txResponse = await contract.publicMint(1, {value: ethers.utils.parseEther("0.01"), gasPrice: 300000,
+        gasLimit: 9000000});
 
+        // try{
+          await txResponse.wait();
+          loadAccountData();
+          setStatus("complete")
 
-    const maxSupply = await getMaxSupply().then((res) =>
+        // } catch(error){
+        //   if (error.code === Logger.errors.TRANSACTION_REPLACED) {
+        //     if (error.cancelled) {
+        //       // The transaction was replaced  :'(
+        //       myProcessCancelledTransaction(tx, error.replacement);
+        //     } else {
+        //       // The user used "speed up" or something similar
+        //       // in their client, but we now have the updated info
+        //       myProcessMinedTransaction(error.replacement, error.receipt);
+        //     }
+        //   }
+        // }
+        //   {
+          //     gasPrice: 100,
+          //     gasLimit: 9000000
+          // }
+          
+          
+          
+        }
+ 
+  }
+  const loadAccountData = async () => {
+    // try{
+      
+      const addr = getWalletAddress();
+      setAddress(addr);
+      const chainId = await getChainId();
+      setNetwork(chainId);
+      
+    
+      
+      const name = await getNameToken()
+      setNameToken(name)
+      console.log(name)
+      
+      
+      const maxSupply  = await getMaxSupply().then((res) =>
       formatUnits(res, 0)
-    )
-    setMaxSupply(maxSupply)
-    console.log(maxSupply)
-
-    const currentSup = await getCurrentSupply().then((res) =>
+      )
+      setMaxSupply(maxSupply)
+      console.log(maxSupply)
+      
+      const currentSup  = await getCurrentSupply().then((res) =>
       formatUnits(res, 0)
-    )
-    setCurrentSupply(currentSup)
-    console.log(currentSup)
-
-  };
-
-  useEffect(() => {
+      )
+      setCurrentSupply(currentSup)
+      console.log(currentSup)
+    // } 
+    // catch(e){
+    //   console.log("Error getting contract");
+    //   return;
+    // }
+      setStatus(null)
+    };
+    
+    useEffect(() => {
     loadAccountData();
 
     const handleAccountChange = (addresses: string[]) => {
@@ -122,6 +168,11 @@ const mint = () => {
 
     getEthereum()?.on("chainChanged", handleNetworkChange);
   }, []);
+
+  function openContractOnEtherScan() {
+    let url = 'https://' + network + '.etherscan.io/token/' + addr_contract
+    window.open(url, '_blank');
+  }
 
   return (
     <div className="bg-[#002368] ">
@@ -232,4 +283,4 @@ const mint = () => {
   );
 };
 
-export default mint;
+export default Home;
